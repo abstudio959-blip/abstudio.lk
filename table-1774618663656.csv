@@ -1,0 +1,5 @@
+﻿File,Changes
+**index.html**,"Fixed duplicate `<head>`/`<body>` tags, implemented working Firebase Auth (login/signup), added user profile modal, fixed image paths to use online URLs, integrated real-time order tracking"
+**admin.html**,"Complete overhaul with secure login, dashboard statistics, order management, payment receipt viewing, user management, and order status tracking"
+**payment.html**,"Added Firebase Storage integration for receipt uploads, file preview, loading states, and proper order saving to database"
+**script.js**,"Fixed all bugs, replaced local file paths with online images, implemented real Firebase tracking, improved contact form"

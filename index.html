@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ab Studio - Graphic Design Experts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Login/Signup Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="login-modal">
+            <span class="close-modal" id="closeModal">&times;</span>
+            
+            <!-- Login Section -->
+            <div id="loginSection">
+                <h2>Ab Studio Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label data-si="Email ලිපිනය (Email)" data-en="Email Address">Email ලිපිනය (Email)</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                        <span class="error-message" id="loginEmailError" data-si="කරුණාකර වලංගු email ලිපිනයක් ඇතුළත් කරන්න." data-en="Please enter a valid email address.">කරුණාකර වලංගු email ලිපිනයක් ඇතුළත් කරන්න.</span>
+                    </div>
+                    <div class="form-group">
+                        <label data-si="මුරපදය (Password)" data-en="Password">මුරපදය (Password)</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <span class="error-message" id="loginPasswordError" data-si="මුරපදය අවම වශයෙන් අකුරු 6ක් විය යුතුය." data-en="Password must be at least 6 characters.">මුරපදය අවම වශයෙන් අකුරු 6ක් විය යුතුය.</span>
+                    </div>
+                    <button type="submit" class="submit-btn" data-si="Login" data-en="Login">Login</button>
+                </form>
+                <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #636e72;">
+                    <span data-si="ගිණුමක් නොමැතිද?" data-en="Don't have an account?">ගිණුමක් නොමැතිද?</span> 
+                    <a href="javascript:void(0)" id="showSignup" style="color: var(--primary-color); font-weight: 600;">Sign Up</a>
+                </p>
+            </div>
+
+            <!-- Signup Section -->
+            <div id="signupSection" style="display: none;">
+                <h2>Create Account</h2>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label data-si="සම්පූර්ණ නම (Full Name)" data-en="Full Name">සම්පූර්ණ නම (Full Name)</label>
+                        <input type="text" id="userName" placeholder="ඔබේ සම්පූර්ණ නම" required>
+                        <span class="error-message" id="userNameError" data-si="කරුණාකර ඔබේ නම ඇතුළත් කරන්න." data-en="Please enter your name.">කරුණාකර ඔබේ නම ඇතුළත් කරන්න.</span>
+                    </div>
+                    <div class="form-group">
+                        <label data-si="දුරකථන අංකය (Phone Number)" data-en="Phone Number">දුරකථන අංකය (Phone Number)</label>
+                        <input type="tel" id="userPhone" placeholder="07XXXXXXXX" required>
+                        <span class="error-message" id="userPhoneError" data-si="කරුණාකර වලංගු දුරකථන අංකයක් ඇතුළත් කරන්න." data-en="Please enter a valid phone number.">කරුණාකර වලංගු දුරකථන අංකයක් ඇතුළත් කරන්න.</span>
+                    </div>
+                    <div class="form-group">
+                        <label data-si="Email ලිපිනය" data-en="Email Address">Email ලිපිනය</label>
+                        <input type="email" id="userEmail" placeholder="your@email.com" required>
+                        <span class="error-message" id="userEmailError" data-si="කරුණාකර වලංගු email ලිපිනයක් ඇතුළත් කරන්න." data-en="Please enter a valid email.">කරුණාකර වලංගු email ලිපිනයක් ඇතුළත් කරන්න.</span>
+                    </div>
+                    <div class="form-group">
+                        <label data-si="මුරපදය (Password)" data-en="Password">මුරපදය (Password)</label>
+                        <input type="password" id="signupPassword" placeholder="Create password (min 6 chars)" required>
+                        <span class="error-message" id="signupPasswordError" data-si="මුරපදය අවම වශයෙන් අකුරු 6ක් විය යුතුය." data-en="Password must be at least 6 characters.">මුරපදය අවම වශයෙන් අකුරු 6ක් විය යුතුය.</span>
+                    </div>
+                    <button type="submit" class="submit-btn" data-si="Register" data-en="Register">Register</button>
+                </form>
+                <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #636e72;">
+                    <span data-si="දැනටමත් ගිණුමක් තිබේද?" data-en="Already have an account?">දැනටමත් ගිණුමක් තිබේද?</span> 
+                    <a href="javascript:void(0)" id="showLogin" style="color: var(--primary-color); font-weight: 600;">Login</a>
+                </p>
+            </div>
+
+            <!-- OTP Section (for future SMS OTP integration) -->
+            <div id="otpSection" style="display: none;">
+                <h2>Verify OTP</h2>
+                <p id="otpMsg" style="font-size: 0.9rem; text-align: center; margin-bottom: 15px; color: #636e72;"></p>
+                <form id="otpForm">
+                    <div class="form-group">
+                        <label data-si="OTP කේතය ඇතුළත් කරන්න" data-en="Enter OTP Code">OTP කේතය ඇතුළත් කරන්න</label>
+                        <input type="text" id="otpInput" maxlength="6" placeholder="XXXXXX" required>
+                    </div>
+                    <button type="submit" class="submit-btn" data-si="Verify & Continue" data-en="Verify & Continue">Verify & Continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="login-modal" style="max-width: 500px;">
+            <span class="close-modal" id="closeProfileModal">&times;</span>
+            <h2><i class="fas fa-user-circle" style="color: var(--primary-color);"></i> My Profile</h2>
+            <div id="profileContent">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> <span data-si="සම්පූර්ණ නම" data-en="Full Name">සම්පූර්ණ නම</span></label>
+                    <input type="text" id="profileName" readonly>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> <span data-si="දුරකථන අංකය" data-en="Phone Number">දුරකථන අංකය</span></label>
+                    <input type="text" id="profilePhone" readonly>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="profileEmail" readonly>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar"></i> <span data-si="ගිණුම සෑදු දිනය" data-en="Account Created">ගිණුම සෑදු දිනය</span></label>
+                    <input type="text" id="profileCreated" readonly>
+                </div>
+                <button type="button" class="submit-btn" id="logoutBtn" style="background: linear-gradient(135deg, #d63031, #ff4757);">
+                    <i class="fas fa-sign-out-alt"></i> <span data-si="Logout" data-en="Logout">Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header id="mainHeader">
+        <div class="logo">
+            <a href="javascript:void(0)" onclick="showHomePage()">
+                <img src="images/ab-studio-logo.png" alt="Ab Studio Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:1.5rem;font-weight:bold;color:var(--primary-color);\'>AB Studio</span>'">
+            </a>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- Language Switcher - Hidden on mobile -->
+            <div class="lang-switcher" id="langSwitcher">
+                <button onclick="changeLanguage('si')" id="btn-si" class="active">SI</button>
+                <button onclick="changeLanguage('en')" id="btn-en">EN</button>
+            </div>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="javascript:void(0)" onclick="showHomePage()" data-si="Home" data-en="Home">Home</a></li>
+                <li><a href="javascript:void(0)" onclick="showServicesPage()" data-si="Services" data-en="Services">Services</a></li>
+                <li><a href="javascript:void(0)" onclick="showPortfolioPage()" data-si="Portfolio" data-en="Portfolio">Portfolio</a></li>
+                <li><a href="javascript:void(0)" onclick="showReviews()" data-si="Reviews" data-en="Reviews">Reviews</a></li>
+                <li><a href="javascript:void(0)" onclick="showTracking()" data-si="Design Tracking" data-en="Design Tracking">Design Tracking</a></li>
+                <li><a href="javascript:void(0)" onclick="showContactPage()" data-si="Contact" data-en="Contact">Contact</a></li>
+                <li><a href="javascript:void(0)" onclick="showAboutPage()" data-si="About Us" data-en="About Us">About Us</a></li>
+            </ul>
+        </nav>
+        <button class="login-btn" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> <span data-si="Login Now" data-en="Login Now">Login Now</span>
+        </button>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="javascript:void(0)" onclick="showHomePage(); toggleMobileMenu();" data-si="Home" data-en="Home">Home</a>
+        <a href="javascript:void(0)" onclick="showServicesPage(); toggleMobileMenu();" data-si="Services" data-en="Services">Services</a>
+        <a href="javascript:void(0)" onclick="showPortfolioPage(); toggleMobileMenu();" data-si="Portfolio" data-en="Portfolio">Portfolio</a>
+        <a href="javascript:void(0)" onclick="showReviews(); toggleMobileMenu();" data-si="Reviews" data-en="Reviews">Reviews</a>
+        <a href="javascript:void(0)" onclick="showTracking(); toggleMobileMenu();" data-si="Design Tracking" data-en="Design Tracking">Design Tracking</a>
+        <a href="javascript:void(0)" onclick="showContactPage(); toggleMobileMenu();" data-si="Contact" data-en="Contact">Contact</a>
+        <a href="javascript:void(0)" onclick="showAboutPage(); toggleMobileMenu();" data-si="About Us" data-en="About Us">About Us</a>
+        <!-- Login Button in Mobile Menu -->
+        <a href="javascript:void(0)" onclick="toggleMobileMenu(); document.getElementById('modalOverlay').classList.add('active');" class="mobile-login-btn" data-si="Login" data-en="Login">Login</a>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="homeHero">
+            <div class="hero-content reveal-left">
+                <!-- Typing Animation Text -->
+                <div class="typing-container">
+                    <span class="typing-text">Abhiman Gihan Bandara Presents</span>
+                    <span class="typing-cursor"></span>
+                </div>
+                
+                <h1>Master <span>Graphic Design</span> - Elevate Your Brand</h1>
+                <p class="hero-subtitle" data-si="AB STUDIO - CREATIVE DESIGN AGENCY / EST. 2024" data-en="AB STUDIO - CREATIVE DESIGN AGENCY / EST. 2024">AB STUDIO - CREATIVE DESIGN AGENCY / EST. 2024</p>
+                <p class="hero-description" data-si="ලංකාවේ අංක 1 නිර්මාණශීලී ග්‍රැෆික් නිර්මාණ ආයතනය. ඔබගේ ව්‍යාපාරයට අවශ්‍ය සියලුම නිර්මාණ උසස් ප්‍රමිතියෙන් යුතුව නිමවා ගැනීමට අප හා එක්වන්න." data-en="Sri Lanka's #1 Creative Graphic Design Agency. Join us to get all your business designs done with premium quality.">ලංකාවේ අංක 1 නිර්මාණශීලී ග්‍රැෆික් නිර්මාණ ආයතනය. ඔබගේ ව්‍යාපාරයට අවශ්‍ය සියලුම නිර්මාණ උසස් ප්‍රමිතියෙන් යුතුව නිමවා ගැනීමට අප හා එක්වන්න.</p>
+                
+                <a href="tel:0766885161" class="contact-float">
+                    <i class="fa fa-phone"></i> <span data-si="Call Us - 0766885161" data-en="Call Us - 0766885161">Call Us - 0766885161</span>
+                </a>
+            </div>
+
+            <div class="hero-images reveal-right">
+                <div class="slide-box box-large">
+                    <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=600" alt="Slide 1">
+                    <img src="https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?auto=format&fit=crop&w=600" alt="Slide 2">
+                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600" alt="Slide 3">
+                </div>
+                <div class="slide-box">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=500" alt="Slide 4">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500" alt="Slide 5">
+                    <img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=500" alt="Slide 6">
+                </div>
+                <div class="slide-box">
+                    <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=500" alt="Slide 7">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500" alt="Slide 8">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=500" alt="Slide 9">
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mobile Contact Button (visible only on mobile) -->
+        <div class="mobile-contact-section">
+            <a href="tel:0766885161" class="mobile-contact-btn">
+                <i class="fa fa-phone"></i> <span data-si="Contact Us" data-en="Contact Us">Contact Us</span>
+            </a>
+        </div>
+     
+        <!-- Pricing/Packages Section -->
+        <section class="pricing-section" id="pricingSection">
+            <div class="section-title reveal">
+                <h2 data-si="Our Packages" data-en="Our Packages">Our Packages</h2>
+                <p data-si="ඔබගේ අවශ්‍යතාවයට ගැලපෙන පැකේජය තෝරන්න" data-en="Choose the package that suits your needs">ඔබගේ අවශ්‍යතාවයට ගැලපෙන පැකේජය තෝරන්න</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <!-- Basic Package -->
+                <div class="pricing-card reveal reveal-delay-1" data-color="blue">
+                    <div class="pricing-header">
+                        <div class="pricing-icon">1</div>
+                        <div class="pricing-title">
+                            <h3 data-si="මූලික පැකේජය" data-en="Basic Package">මූලික පැකේජය</h3>
+                            <p data-si="පුද්ගලික හා කුඩා ව්‍යාපාර සඳහා" data-en="For personal & small businesses">පුද්ගලික හා කුඩා ව්‍යාපාර සඳහා</p>
+                        </div>
+                    </div>
+                    <div class="pricing-body">
+                        <span class="payment-label" data-si="Monthly Payment" data-en="Monthly Payment">Monthly Payment</span>
+                        <div class="pricing-amount">
+                            <span class="currency">LKR</span>
+                            <span class="price">1000</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-si="5 Social Media Posts" data-en="5 Social Media Posts">5 Social Media Posts</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="2 Flyer Designs" data-en="2 Flyer Designs">2 Flyer Designs</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Basic Logo Design" data-en="Basic Logo Design">Basic Logo Design</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="3 Revisions" data-en="3 Revisions">3 Revisions</span></li>
+                        </ul>
+                        <button class="pricing-btn" onclick="showContactPage()" data-si="Get Started" data-en="Get Started">Get Started</button>
+                    </div>
+                </div>
+
+                <!-- Standard Package -->
+                <div class="pricing-card reveal reveal-delay-2" data-color="purple">
+                    <div class="pricing-header">
+                        <div class="pricing-icon">2</div>
+                        <div class="pricing-title">
+                            <h3 data-si="සාමාන්‍ය පැකේජය" data-en="Standard Package">සාමාන්‍ය පැකේජය</h3>
+                            <p data-si="වර්ධනය වන ව්‍යාපාර සඳහා" data-en="For growing businesses">වර්ධනය වන ව්‍යාපාර සඳහා</p>
+                        </div>
+                    </div>
+                    <div class="pricing-body">
+                        <span class="payment-label" data-si="Monthly Payment" data-en="Monthly Payment">Monthly Payment</span>
+                        <div class="pricing-amount">
+                            <span class="currency">LKR</span>
+                            <span class="price">800</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-si="10 Social Media Posts" data-en="10 Social Media Posts">10 Social Media Posts</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="5 Flyer Designs" data-en="5 Flyer Designs">5 Flyer Designs</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Premium Logo Design" data-en="Premium Logo Design">Premium Logo Design</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Unlimited Revisions" data-en="Unlimited Revisions">Unlimited Revisions</span></li>
+                        </ul>
+                        <button class="pricing-btn" onclick="showContactPage()" data-si="Get Started" data-en="Get Started">Get Started</button>
+                    </div>
+                </div>
+
+                <!-- Premium Package -->
+                <div class="pricing-card reveal reveal-delay-3" data-color="orange">
+                    <div class="pricing-header">
+                        <div class="pricing-icon">3</div>
+                        <div class="pricing-title">
+                            <h3 data-si="විශේෂ පැකේජය" data-en="Premium Package">විශේෂ පැකේජය</h3>
+                            <p data-si="වෘත්තීය ව්‍යාපාර සඳහා" data-en="For professional businesses">වෘත්තීය ව්‍යාපාර සඳහා</p>
+                        </div>
+                    </div>
+                    <div class="pricing-body">
+                        <span class="payment-label" data-si="Monthly Payment" data-en="Monthly Payment">Monthly Payment</span>
+                        <div class="pricing-amount">
+                            <span class="currency">LKR</span>
+                            <span class="price">1000</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-si="20 Social Media Posts" data-en="20 Social Media Posts">20 Social Media Posts</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="10 Flyer Designs" data-en="10 Flyer Designs">10 Flyer Designs</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Brand Identity Kit" data-en="Brand Identity Kit">Brand Identity Kit</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Priority Support" data-en="Priority Support">Priority Support</span></li>
+                        </ul>
+                        <button class="pricing-btn" onclick="showContactPage()" data-si="Get Started" data-en="Get Started">Get Started</button>
+                    </div>
+                </div>
+
+                <!-- Enterprise Package -->
+                <div class="pricing-card reveal reveal-delay-4" data-color="green">
+                    <div class="pricing-header">
+                        <div class="pricing-icon">4</div>
+                        <div class="pricing-title">
+                            <h3 data-si="ව්‍යාපාරික පැකේජය" data-en="Enterprise Package">ව්‍යාපාරික පැකේජය</h3>
+                            <p data-si="විශාල සංවිධාන සඳහා" data-en="For large organizations">විශාල සංවිධාන සඳහා</p>
+                        </div>
+                    </div>
+                    <div class="pricing-body">
+                        <span class="payment-label" data-si="Monthly Payment" data-en="Monthly Payment">Monthly Payment</span>
+                        <div class="pricing-amount">
+                            <span class="currency">LKR</span>
+                            <span class="price">900</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-si="Unlimited Designs" data-en="Unlimited Designs">Unlimited Designs</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Dedicated Designer" data-en="Dedicated Designer">Dedicated Designer</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="Full Branding" data-en="Full Branding">Full Branding</span></li>
+                            <li><i class="fas fa-check"></i> <span data-si="24/7 Support" data-en="24/7 Support">24/7 Support</span></li>
+                        </ul>
+                        <button class="pricing-btn" onclick="showContactPage()" data-si="Get Started" data-en="Get Started">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+     
+        <!-- Services Section -->
+        <section class="services" id="homeServices">
+            <div class="section-title reveal">
+                <h2 data-si="Our Popular Services" data-en="Our Popular Services">Our Popular Services</h2>
+                <p data-si="ඔබගේ ව්‍යාපාරයට අවශ්‍ය සියලුම ග්‍රැෆික් නිර්මාණ සේවා එකම ස්ථානයකින්" data-en="All graphic design services your business needs in one place">ඔබගේ ව්‍යාපාරයට අවශ්‍ය සියලුම ග්‍රැෆික් නිර්මාණ සේවා එකම ස්ථානයකින්</p>
+            </div>
+            <div class="service-grid">
+                <div class="card reveal reveal-delay-1" onclick="showPortfolio('Logo & Branding')">
+                    <img src="https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?auto=format&fit=crop&w=500" alt="Logo">
+                    <div class="card-body">
+                        <h3 data-si="Logo & Branding" data-en="Logo & Branding">Logo & Branding</h3>
+                        <p data-si="ඔබේ ව්‍යාපාරයට අනන්‍ය වූ වෘත්තීය මට්ටමේ ලෝගෝ නිර්මාණ." data-en="Professional logo designs unique to your business.">ඔබේ ව්‍යාපාරයට අනන්‍ය වූ වෘත්තීය මට්ටමේ ලෝගෝ නිර්මාණ.</p>
+                        <span class="price">LKR 2500 Up</span>
+                    </div>
+                </div>
+                <div class="card reveal reveal-delay-2" onclick="showPortfolio('Social Media Posts')">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=500" alt="Social Media">
+                    <div class="card-body">
+                        <h3 data-si="Social Media Posts" data-en="Social Media Posts">Social Media Posts</h3>
+                        <p data-si="Facebook/Instagram සඳහා ආකර්ෂණීය පෝස්ට් නිර්මාණ." data-en="Attractive post designs for Facebook/Instagram.">Facebook/Instagram සඳහා ආකර්ෂණීය පෝස්ට් නිර්මාණ.</p>
+                        <span class="price">LKR 1000 Up</span>
+                    </div>
+                </div>
+                <div class="card reveal reveal-delay-3" onclick="showPortfolio('Flyers & Brochures')">
+                    <img src="https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=500" alt="Flyers">
+                    <div class="card-body">
+                        <h3 data-si="Flyers & Brochures" data-en="Flyers & Brochures">Flyers & Brochures</h3>
+                        <p data-si="මුද්‍රණ කටයුතු සඳහා අවශ්‍ය සියලුම නිර්මාණ." data-en="All designs needed for printing purposes.">මුද්‍රණ කටයුතු සඳහා අවශ්‍ය සියලුම නිර්මාණ.</p>
+                        <span class="price">LKR 1500 Up</span>
+                    </div>
+                </div>
+                <div class="card reveal reveal-delay-4" onclick="showPortfolio('Cover Pages')">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500" alt="Cover Page">
+                    <div class="card-body">
+                        <h3 data-si="Cover Pages" data-en="Cover Pages">Cover Pages</h3>
+                        <p data-si="ඔබේ ටියුශන් ක්ලාස් එකේ ටුයිට් එක සදහා ලස්සන නිමාවක්." data-en="Beautiful finish for your tuition class notes.">ඔබේ ටියුශන් ක්ලාස් එකේ ටුයිට් එක සදහා ලස්සන නිමාවක්.</p>
+                        <span class="price">LKR 1000 Up</span>
+                    </div>
+                </div>
+                <div class="card reveal reveal-delay-5" onclick="showPortfolio('Web Design')">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500" alt="Web Design">
+                    <div class="card-body">
+                        <h3 data-si="Web Design" data-en="Web Design">Web Design</h3>
+                        <p data-si="ඔබේ ව්‍යාපාරය සඳහා නවීන සහ ආකර්ෂණීය වෙබ් අඩවි නිර්මාණ." data-en="Modern and attractive website designs for your business.">ඔබේ ව්‍යාපාරය සඳහා නවීන සහ ආකර්ෂණීය වෙබ් අඩවි නිර්මාණ.</p>
+                        <span class="price">LKR 15,000 Up</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Full Services Page -->
+        <section id="fullServicesPage" style="display: none; padding: 60px 8%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 30px; gap: 20px;">
+                <button onclick="showOrderForm()" class="submit-btn" style="width: auto; padding: 14px 28px;">
+                    <i class="fa fa-plus"></i> <span data-si="New Design" data-en="New Design">New Design</span>
+                </button>
+
+                <div class="search-container">
+                    <input type="text" id="serviceSearch" onkeyup="searchServices()" placeholder="ඔබට අවශ්‍ය සේවාව මෙහි සොයන්න..." data-si-placeholder="ඔබට අවශ්‍ය සේවාව මෙහි සොයන්න..." data-en-placeholder="Search for services here...">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+
+            <div class="service-grid" id="mainServiceGrid">
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?auto=format&fit=crop&w=500" alt="Logo">
+                    <div class="card-body">
+                        <h3 data-si="Logo & Branding" data-en="Logo & Branding">Logo & Branding</h3>
+                        <p data-si="ඔබේ ව්‍යාපාරයට අනන්‍ය වූ වෘත්තීය මට්ටමේ ලෝගෝ නිර්මාණ." data-en="Professional logo designs unique to your business.">ඔබේ ව්‍යාපාරයට අනන්‍ය වූ වෘත්තීය මට්ටමේ ලෝගෝ නිර්මාණ.</p>
+                        <span class="price">LKR 2500 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Logo & Branding', 2500)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=500" alt="Social Media">
+                    <div class="card-body">
+                        <h3 data-si="Social Media Posts" data-en="Social Media Posts">Social Media Posts</h3>
+                        <p data-si="Facebook/Instagram සඳහා ආකර්ෂණීය පෝස්ට් නිර්මාණ." data-en="Attractive post designs for Facebook/Instagram.">Facebook/Instagram සඳහා ආකර්ෂණීය පෝස්ට් නිර්මාණ.</p>
+                        <span class="price">LKR 1000 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Social Media Posts', 1000)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=500" alt="Flyers">
+                    <div class="card-body">
+                        <h3 data-si="Flyers & Brochures" data-en="Flyers & Brochures">Flyers & Brochures</h3>
+                        <p data-si="මුද්‍රණ කටයුතු සඳහා අවශ්‍ය සියලුම නිර්මාණ." data-en="All designs needed for printing purposes.">මුද්‍රණ කටයුතු සඳහා අවශ්‍ය සියලුම නිර්මාණ.</p>
+                        <span class="price">LKR 1500 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Flyers & Brochures', 1500)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500" alt="Cover Page">
+                    <div class="card-body">
+                        <h3 data-si="Cover Pages" data-en="Cover Pages">Cover Pages</h3>
+                        <p data-si="ඔබේ ටියුශන් ක්ලාස් එකේ ටියුට් එක සදහා ලස්සන නිමාවක්." data-en="Beautiful finish for your tuition class notes.">ඔබේ ටියුශන් ක්ලාස් එකේ ටියුට් එක සදහා ලස්සන නිමාවක්.</p>
+                        <span class="price">LKR 1000 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Cover Pages', 1000)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500" alt="Web Design">
+                    <div class="card-body">
+                        <h3 data-si="Web Design" data-en="Web Design">Web Design</h3>
+                        <p data-si="ඔබේ ව්‍යාපාරය සඳහා නවීන සහ ආකර්ෂණීය වෙබ් අඩවි නිර්මාණ." data-en="Modern and attractive website designs for your business.">ඔබේ ව්‍යාපාරය සඳහා නවීන සහ ආකර්ෂණීය වෙබ් අඩවි නිර්මාණ.</p>
+                        <span class="price">LKR 15,000 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Web Design', 15000)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=500" alt="Business Cards">
+                    <div class="card-body">
+                        <h3 data-si="Business Cards" data-en="Business Cards">Business Cards</h3>
+                        <p data-si="වෘත්තීය මට්ටමේ ව්‍යාපාරික කාඩ්පත් නිර්මාණ." data-en="Professional business card designs.">වෘත්තීය මට්ටමේ ව්‍යාපාරික කාඩ්පත් නිර්මාණ.</p>
+                        <span class="price">LKR 800 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Business Cards', 800)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=500" alt="Motion Graphics">
+                    <div class="card-body">
+                        <h3 data-si="Motion Graphics" data-en="Motion Graphics">Motion Graphics</h3>
+                        <p data-si="ආකර්ෂණීය වීඩියෝ සහ ඇනිමේෂන් නිර්මාණ." data-en="Attractive video and animation designs.">ආකර්ෂණීය වීඩියෝ සහ ඇනිමේෂන් නිර්මාණ.</p>
+                        <span class="price">LKR 5000 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('Motion Graphics', 5000)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+                <div class="card service-item">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=500" alt="UI/UX Design">
+                    <div class="card-body">
+                        <h3 data-si="UI/UX Design" data-en="UI/UX Design">UI/UX Design</h3>
+                        <p data-si="ජංගම දුරකථන මෘදුකාංග සඳහා අතුරුමුහුණත් නිර්මාණය." data-en="Interface design for mobile applications.">ජංගම දුරකථන මෘදුකාංග සඳහා අතුරුමුහුණත් නිර්මාණය.</p>
+                        <span class="price">LKR 10,000 Up</span>
+                        <button class="btn-new-design" onclick="openOrderForm('UI/UX Design', 10000)">+ <span data-si="New Design" data-en="New Design">New Design</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Detail Section -->
+        <section id="portfolioDetail" style="display: none; padding: 60px 8%; text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+                <button onclick="backToHome()" style="padding: 12px 24px; cursor: pointer; border-radius: 10px; border: none; background: #eee; font-weight: 600; transition: all 0.3s ease;">
+                    <i class="fa fa-arrow-left"></i> <span data-si="Back" data-en="Back">Back</span>
+                </button>
+                <h2 id="detailTitle" style="font-size: 2rem; color: var(--dark-color);">Service Name</h2>
+                <button onclick="showOrderForm()" class="submit-btn" style="padding: 12px 28px;">
+                    <i class="fa fa-plus"></i> <span data-si="New Design" data-en="New Design">New Design</span>
+                </button>
+            </div>
+            <div id="portfolioGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px;">
+            </div>
+        </section>
+
+        <!-- Order Form Section -->
+        <section id="orderFormSection" style="display: none; padding: 60px 8%; background: #fff; max-width: 750px; margin: 20px auto; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--dark-color);"><i class="fas fa-paint-brush" style="color: var(--primary-color);"></i> <span data-si="Order Your New Design" data-en="Order Your New Design">Order Your New Design</span></h2>
+            
+            <form id="designOrderForm" onsubmit="processOrder(event)" style="text-align: left;">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> <span data-si="සම්පූර්ණ නම" data-en="Full Name">සම්පූර්ණ නම</span></label>
+                    <input type="text" id="fullName" placeholder="ඔබේ සම්පූර්ණ නම" data-si-placeholder="ඔබේ සම්පූර්ණ නම" data-en-placeholder="Your full name" required>
+                    <span class="error-message" id="fullNameError" data-si="කරුණාකර ඔබේ නම ඇතුළත් කරන්න." data-en="Please enter your name.">කරුණාකර ඔබේ නම ඇතුළත් කරන්න.</span>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> <span data-si="දුරකථන අංකය" data-en="Phone Number">දුරකථන අංකය</span></label>
+                    <input type="tel" id="phone" placeholder="07XXXXXXXX" required>
+                    <span class="error-message" id="phoneError" data-si="කරුණාකර වලංගු දුරකථන අංකයක් ඇතුළත් කරන්න." data-en="Please enter a valid phone number.">කරුණාකර වලංගු දුරකථන අංකයක් ඇතුළත් කරන්න.</span>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> <span data-si="Email ලිපිනය" data-en="Email Address">Email ලිපිනය</span></label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                    <span class="error-message" id="emailError" data-si="කරුණාකර වලංගු email ලිපිනයක් ඇතුළත් කරන්න." data-en="Please enter a valid email.">කරුණාකර වලංගු email ලිපිනයක් ඇතුළත් කරන්න.</span>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-ruler-combined"></i> <span data-si="අවශ්‍ය ප්‍රමාණය (Size)" data-en="Required Size">අවශ්‍ය ප්‍රමාණය (Size)</span></label>
+                    <input type="text" id="designSize" placeholder="උදා: A4, 1080x1080px" data-si-placeholder="උදා: A4, 1080x1080px" data-en-placeholder="e.g., A4, 1080x1080px">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> <span data-si="ඩිසයින් එකට අදාළ විස්තර/Images අප්ලෝඩ් කරන්න" data-en="Upload details/images for the design">ඩිසයින් එකට අදාළ විස්තර/Images අප්ලෝඩ් කරන්න</span></label>
+                    <input type="file" id="uploadFile" style="padding: 12px;" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="coverDetails"><i class="fas fa-info-circle"></i> <span data-si="Add Cover Details" data-en="Add Cover Details">Add Cover Details</span> <span class="optional" data-si="(optional)" data-en="(optional)">(optional)</span></label>
+                    <textarea id="coverDetails" name="coverDetails" rows="4" placeholder="උදා: අකුරු වල වර්ණ, විශේෂ ලෝගෝ ඇතුළත් කිරීම් ආදිය..." data-si-placeholder="උදා: අකුරු වල වර්ණ, විශේෂ ලෝගෝ ඇතුළත් කිරීම් ආදිය..." data-en-placeholder="e.g., text colors, special logo inclusions, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="printMood"><i class="fas fa-print"></i> <span data-si="Print Moods" data-en="Print Moods">Print Moods</span> <span class="optional" data-si="(optional)" data-en="(optional)">(optional)</span></label>
+                    <select id="printMood" name="printMood">
+                        <option value="" disabled selected data-si="තෝරන්න (Select Mood)" data-en="Select Mood">තෝරන්න (Select Mood)</option>
+                        <option value="offset">OFFSET COLOR</option>
+                        <option value="digital">DIGITAL PRINT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-file-export"></i> <span data-si="ලබා ගැනීමට අවශ්‍ය ආකාරය (Format)" data-en="Required Format">ලබා ගැනීමට අවශ්‍ය ආකාරය (Format)</span></label>
+                    <select id="fileFormat">
+                        <option value="PNG">PNG</option>
+                        <option value="PDF">PDF</option>
+                        <option value="PSD (Source File)">PSD (Source File)</option>
+                        <option value="JPG">JPG</option>
+                        <option value="web">Web</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-paper-plane"></i> <span data-si="ඩිසයින් එක එවිය යුත්තේ කුමක් හරහාද?" data-en="How should we send the design?">ඩිසයින් එක එවිය යුත්තේ කුමක් හරහාද?</span></label>
+                    <select id="deliveryMethod">
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Telegram">Telegram</option>
+                        <option value="Email">Email</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" style="font-size: 1.1rem; padding: 16px;">
+                    <i class="fas fa-arrow-right"></i> <span data-si="Continue to Payment" data-en="Continue to Payment">Continue to Payment</span>
+                </button>
+                <p onclick="backToPortfolio()" style="text-align: center; margin-top: 20px; color: #636e72; cursor: pointer; transition: color 0.3s ease;">
+                    <i class="fas fa-arrow-left"></i> <span data-si="Back to Portfolio" data-en="Back to Portfolio">Back to Portfolio</span>
+                </p>
+            </form>
+        </section>
+
+        <!-- About Section -->
+        <section id="aboutSection" class="about-section" style="display: none;">
+            <div class="about-container">
+                <div class="about-image reveal-left">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800" alt="AB Studio Team">
+                    <div style="position: absolute; bottom: -20px; right: -20px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 25px; border-radius: 20px; font-weight: bold; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);">
+                        <i class="fas fa-award" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                        <span data-si="5+ Years Experience" data-en="5+ Years Experience">5+ Years Experience</span>
+                    </div>
+                </div>
+                <div class="about-text reveal-right">
+                    <h3 data-si="Creative Mindset" data-en="Creative Mindset">Creative Mindset</h3>
+                    <h2 data-si="The Story Behind AB Studio" data-en="The Story Behind AB Studio">The Story Behind <br>AB Studio</h2>
+                    <p data-si="අපි AB Studio හරහා ඔබේ ව්‍යාපාරික සිහින සැබෑ කරන වෘත්තීය මට්ටමේ ග්‍රැෆික් නිර්මාණ සේවාවක් ලබා දෙන්නෙමු. සරල ලෝගෝ නිර්මාණයේ සිට සංකීර්ණ වෙබ් අඩවි නිර්මාණය දක්වා වූ පුළුල් පරාසයක සේවාවන් අප සතුය. අපගේ අරමුණ වන්නේ සෑම නිර්මාණයක්ම කලාවක් මෙන්ම පාරිභෝගිකයාගේ ව්‍යාපාරයට සැබෑ වටිනාකමක් එකතු කරන මෙවලමක් බවට පත් කිරීමයි." data-en="Through AB Studio, we provide professional graphic design services that make your business dreams come true. We offer a wide range of services from simple logo design to complex website creation. Our goal is to make every design a work of art and a tool that adds real value to the customer's business.">අපි AB Studio හරහා ඔබේ ව්‍යාපාරික සිහින සැබෑ කරන වෘත්තීය මට්ටමේ ග්‍රැෆික් නිර්මාණ සේවාවක් ලබා දෙන්නෙමු. සරල ලෝගෝ නිර්මාණයේ සිට සංකීර්ණ වෙබ් අඩවි නිර්මාණය දක්වා වූ පුළුල් පරාසයක සේවාවන් අප සතුය. අපගේ අරමුණ වන්නේ සෑම නිර්මාණයක්ම කලාවක් මෙන්ම පාරිභෝගිකයාගේ ව්‍යාපාරයට සැබෑ වටිනාකමක් එකතු කරන මෙවලමක් බවට පත් කිරීමයි.</p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3>500+</h3>
+                            <small data-si="Projects Done" data-en="Projects Done">Projects Done</small>
+                        </div>
+                        <div class="stat-item">
+                            <h3>300+</h3>
+                            <small data-si="Happy Clients" data-en="Happy Clients">Happy Clients</small>
+                        </div>
+                        <div class="stat-item">
+                            <h3>100%</h3>
+                            <small data-si="Creativity" data-en="Creativity">Creativity</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolioSection" class="portfolio-section" style="display: none;">
+            <div style="text-align: center; margin-bottom: 50px;" class="reveal">
+                <h2 style="font-size: 2.8rem; color: #2d3436;" data-si="Our Masterpieces" data-en="Our Masterpieces">Our Masterpieces</h2>
+                <div style="width: 80px; height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); margin: 15px auto; border-radius: 2px;"></div>
+                <p style="color: #636e72;" data-si="අප විසින් නිම කරන ලද විශිෂ්ටතම නිර්මාණ එකතුව." data-en="Collection of our finest works.">අප විසින් නිම කරන ලද විශිෂ්ටතම නිර්මාණ එකතුව.</p>
+            </div>
+            <div class="filter-buttons reveal">
+                <button class="filter-btn active" onclick="filterPortfolio('all')" data-si="All Designs" data-en="All Designs">All Designs</button>
+                <button class="filter-btn" onclick="filterPortfolio('logos')" data-si="Logos" data-en="Logos">Logos</button>
+                <button class="filter-btn" onclick="filterPortfolio('social')" data-si="Social Media" data-en="Social Media">Social Media</button>
+                <button class="filter-btn" onclick="filterPortfolio('print')" data-si="Print Materials" data-en="Print Materials">Print Materials</button>
+            </div>
+            <div class="portfolio-grid" id="mainPortfolioGrid">
+                <div class="portfolio-item logos reveal reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=500" alt="Logo Design">
+                    <div class="portfolio-overlay">
+                        <h3>Modern Logo</h3>
+                        <p>Branding Project</p>
+                    </div>
+                </div>
+                <div class="portfolio-item social reveal reveal-delay-2">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500" alt="Social Media">
+                    <div class="portfolio-overlay">
+                        <h3>Instagram Post</h3>
+                        <p>Digital Marketing</p>
+                    </div>
+                </div>
+                <div class="portfolio-item print reveal reveal-delay-3">
+                    <img src="https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?w=500" alt="Flyer">
+                    <div class="portfolio-overlay">
+                        <h3>Business Flyer</h3>
+                        <p>Print Design</p>
+                    </div>
+                </div>
+                <div class="portfolio-item logos reveal reveal-delay-4">
+                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500" alt="Logo Design 2">
+                    <div class="portfolio-overlay">
+                        <h3>Corporate Logo</h3>
+                        <p>Brand Identity</p>
+                    </div>
+                </div>
+                <div class="portfolio-item social reveal reveal-delay-5">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500" alt="Social Media 2">
+                    <div class="portfolio-overlay">
+                        <h3>Facebook Banner</h3>
+                        <p>Social Campaign</p>
+                    </div>
+                </div>
+                <div class="portfolio-item print reveal reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?w=500" alt="Brochure">
+                    <div class="portfolio-overlay">
+                        <h3>Product Brochure</h3>
+                        <p>Marketing Material</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section - NEW DESIGN -->
+        <section id="contactSection" class="contact-section" style="display: none;">
+            <div class="contact-wrapper-new">
+                <div class="contact-left reveal-left">
+                    <span class="contact-label" data-si="Get In Touch" data-en="Get In Touch">Get In Touch</span>
+                    <h2 class="contact-title-si" data-si="අප හා සම්බන්ධ වන්න" data-en="Contact Us">අප හා සම්බන්ධ වන්න</h2>
+                    <h2 class="contact-title-en" data-si="Contact Us" data-en="Contact Us">Contact Us</h2>
+                    <p class="contact-description" data-si="ඕනෑම නිර්මාණයක් පිළිබඳ විමසීමට හෝ උපදෙස් ලබාගැනීමට අප හා සම්බන්ධ වන්න. WhatsApp හරහා කඩිනමින් පිළිතුරු ලබාගත හැක. ඕනෑම විස්තරයක් සඳහා අපගේ admin කණ්ඩායම සමඟ සම්බන්ධ වන්න." data-en="Contact us for any design inquiries or advice. Get quick responses via WhatsApp. Contact our admin team for any details.">ඕනෑම නිර්මාණයක් පිළිබඳ විමසීමට හෝ උපදෙස් ලබාගැනීමට අප හා සම්බන්ධ වන්න. WhatsApp හරහා කඩිනමින් පිළිතුරු ලබාගත හැක. ඕනෑම විස්තරයක් සඳහා අපගේ admin කණ්ඩායම සමඟ සම්බන්ධ වන්න.</p>
+                    
+                    <div class="contact-cards">
+                        <div class="contact-card whatsapp" onclick="window.open('https://wa.me/94704025586', '_blank')">
+                            <div class="contact-card-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4 data-si="WhatsApp සම්බන්ධතාව" data-en="WhatsApp Contact">WhatsApp සම්බන්ධතාව</h4>
+                                <p data-si="කඩිනමින් පිළිතුරු ලබීම සඳහා WhatsApp හරහා සම්බන්ධ වන්න" data-en="Connect via WhatsApp for quick responses">කඩිනමින් පිළිතුරු ලබීම සඳහා WhatsApp හරහා සම්බන්ධ වන්න</p>
+                                <span class="contact-card-link"><span data-si="පණිවිඩය යැවීමට ක්ලික් කරන්න" data-en="Click to send message">පණිවිඩය යැවීමට ක්ලික් කරන්න</span> <i class="fas fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card admin" onclick="window.open('https://wa.me/94766885161', '_blank')">
+                            <div class="contact-card-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4 data-si="සඳහා Admin" data-en="For Admin">සඳහා Admin</h4>
+                                <p data-si="විශේෂිත විස්තර සඳහා අපගේ admin කණ්ඩායම සමඟ සම්බන්ධ වන්න" data-en="Contact our admin team for specific details">විශේෂිත විස්තර සඳහා අපගේ admin කණ්ඩායම සමඟ සම්බන්ධ වන්න</p>
+                                <span class="contact-card-link"><span data-si="Admin සමඟ සම්බන්ධ වන්න" data-en="Connect with Admin">Admin සමඟ සම්බන්ධ වන්න</span> <i class="fas fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card email" onclick="window.location.href='mailto:hello@abstudio.lk'">
+                            <div class="contact-card-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4 data-si="විද්‍යුත් තැපෑල" data-en="Email">විද්‍යුත් තැපෑල</h4>
+                                <p data-si="විස්තරාත්මක විමසීම් සඳහා විද්‍යුත් තැපෑලෙන් අමතන්න" data-en="Email us for detailed inquiries">විස්තරාත්මක විමසීම් සඳහා විද්‍යුත් තැපෑලෙන් අමතන්න</p>
+                                <span class="contact-card-link">hello@abstudio.lk <i class="fas fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-panel-new reveal-right">
+                    <h3><i class="fas fa-paper-plane" style="color: var(--primary-color);"></i> <span data-si="පණිවිඩයක් එවන්න" data-en="Send a Message">පණිවිඩයක් එවන්න</span></h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> <span data-si="සම්පූර්ණ නම" data-en="Full Name">සම්පූර්ණ නම</span></label>
+                            <input type="text" id="contactName" placeholder="ඔබේ නම ඇතුළත් කරන්න" data-si-placeholder="ඔබේ නම ඇතුළත් කරන්න" data-en-placeholder="Enter your name" required>
+                            <span class="error-message" id="contactNameError" data-si="කරුණාකර ඔබේ නම ඇතුළත් කරන්න." data-en="Please enter your name.">කරුණාකර ඔබේ නම ඇතුළත් කරන්න.</span>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-whatsapp"></i> <span data-si="WhatsApp අංකය" data-en="WhatsApp Number">WhatsApp අංකය</span></label>
+                            <input type="tel" id="contactWhatsApp" placeholder="+94 77 123 4567" required>
+                            <span class="error-message" id="contactWhatsAppError" data-si="කරුණාකර වලංගු WhatsApp අංකයක් ඇතුළත් කරන්න." data-en="Please enter a valid WhatsApp number.">කරුණාකර වලංගු WhatsApp අංකයක් ඇතුළත් කරන්න.</span>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> <span data-si="පණිවිඩය" data-en="Message">පණිවිඩය</span></label>
+                            <textarea rows="5" id="contactMessage" placeholder="ඔබට අවශ්‍ය දේ මෙහි ලියන්න..." data-si-placeholder="ඔබට අවශ්‍ය දේ මෙහි ලියන්න..." data-en-placeholder="Write what you need here..."></textarea>
+                            <span class="error-message" id="contactMessageError" data-si="කරුණාකර පණිවිඩයක් ඇතුළත් කරන්න." data-en="Please enter a message.">කරුණාකර පණිවිඩයක් ඇතුළත් කරන්න.</span>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span data-si="පණිවිඩය එවන්න" data-en="Send Message">පණිවිඩය එවන්න</span> <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tracking Section -->
+        <section id="trackingSection" class="tracking-section" style="display: none;">
+            <div class="tracking-card reveal-scale">
+                <i class="fas fa-map-marker-alt"></i>
+                <h2 data-si="Track Your Design" data-en="Track Your Design">Track Your Design</h2>
+                <p data-si="ඔබේ ඇණවුම් අංකය (Order ID) ඇතුළත් කර ප්‍රගතිය පරීක්ෂා කරන්න." data-en="Enter your Order ID to check progress.">ඔබේ ඇණවුම් අංකය (Order ID) ඇතුළත් කර ප්‍රගතිය පරීක්ෂා කරන්න.</p>
+                <div class="search-box-tracking">
+                    <input type="text" id="orderIDInput" placeholder="උදා: AB-1001" data-si-placeholder="උදා: AB-1001" data-en-placeholder="e.g., AB-1001">
+                    <button onclick="trackOrder()" class="submit-btn track-order-btn">
+                        <i class="fas fa-search"></i> <span data-si="Track" data-en="Track">Track</span>
+                    </button>
+                </div>
+                <div id="trackingResult" class="progress-container">
+                    <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+                    <div class="step" id="step1">
+                        <div class="step-circle"><i class="fas fa-receipt"></i></div>
+                        <small data-si="Ordered" data-en="Ordered">Ordered</small>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-circle"><i class="fas fa-pen-nib"></i></div>
+                        <small data-si="Designing" data-en="Designing">Designing</small>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-circle"><i class="fas fa-check-double"></i></div>
+                        <small data-si="Review" data-en="Review">Review</small>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-circle"><i class="fas fa-download"></i></div>
+                        <small data-si="Delivery" data-en="Delivery">Delivery</small>
+                    </div>
+                </div>
+                <div id="orderDetails" style="margin-top: 30px; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 10px; display: none;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;"><i class="fas fa-info-circle"></i> <span data-si="Order Details" data-en="Order Details">Order Details</span></h4>
+                    <p><strong><i class="fas fa-paint-brush"></i> <span data-si="Service:" data-en="Service:">Service:</span></strong> <span id="trackService"></span></p>
+                    <p><strong><i class="fas fa-user"></i> <span data-si="Customer:" data-en="Customer:">Customer:</span></strong> <span id="trackCustomer"></span></p>
+                    <p><strong><i class="fas fa-calendar"></i> <span data-si="Order Date:" data-en="Order Date:">Order Date:</span></strong> <span id="trackDate"></span></p>
+                    <p><strong><i class="fas fa-money-bill-wave"></i> <span data-si="Amount:" data-en="Amount:">Amount:</span></strong> <span id="trackAmount"></span></p>
+                </div>
+                <p id="trackMessage" style="margin-top: 30px; font-weight: 500;"></p>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviewsSection" class="reviews-section" style="display: none;">
+            <div style="margin-bottom: 40px;" class="reveal">
+                <h2 style="font-size: 2.8rem; color: #2d3436;" data-si="Customer Reviews" data-en="Customer Reviews">Customer Reviews</h2>
+                <div style="width: 80px; height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); margin: 15px auto; border-radius: 2px;"></div>
+                <p style="color: #636e72;" data-si="අපගේ වෘත්තීය සේවාව පිළිබඳ පාරිභෝගික අදහස් කිහිපයක්" data-en="Some customer feedback about our professional service">අපගේ වෘත්තීය සේවාව පිළිබඳ පාරිභෝගික අදහස් කිහිපයක්</p>
+            </div>
+            <div class="review-container reveal">
+                <button class="nav-btn prev-btn" onclick="prevReview()"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn next-btn" onclick="nextReview()"><i class="fas fa-chevron-right"></i></button>
+                <div class="review-wrapper" id="reviewSlider">
+                    <div class="review-card">
+                        <div class="review-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p style="font-size: 1.1rem; color: #4b4b4b; line-height: 1.8;" data-si="ඉතාමත් කෙටි කාලයකදී මා හට අවශ්‍ය වූ ලෝගෝ එක ඉතාමත් නිර්මාණශීලී ලෙස නිමවා දුන්නා. ස්තූතියි AB Studio!" data-en="The logo I needed was created very creatively in a very short time. Thank you AB Studio!">"ඉතාමත් කෙටි කාලයකදී මා හට අවශ්‍ය වූ ලෝගෝ එක ඉතාමත් නිර්මාණශීලී ලෙස නිමවා දුන්නා. ස්තූතියි AB Studio!"</p>
+                            <span class="reviewer-name">Kamal Perera</span>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p style="font-size: 1.1rem; color: #4b4b4b; line-height: 1.8;" data-si="මගේ Social Media Posts ටික ලස්සනට කරලා දුන්නා. ව්‍යාපාරයට ලොකු ආකර්ෂණයක් ලැබුණා. පිරිසිදු වැඩක්!" data-en="My Social Media Posts were done beautifully. The business got great attraction. Clean work!">"මගේ Social Media Posts ටික ලස්සනට කරලා දුන්නා. ව්‍යාපාරයට ලොකු ආකර්ෂණයක් ලැබුණා. පිරිසිදු වැඩක්!"</p>
+                            <span class="reviewer-name">Nimali Silva</span>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                            <p style="font-size: 1.1rem; color: #4b4b4b; line-height: 1.8;" data-si="හොඳම සේවාවක් ලබා දෙන ආයතනයක්. මගේ වෙබ් අඩවියේ නිර්මාණ කටයුතු සියල්ලම ඉතා සාර්ථකයි." data-en="An organization that provides the best service. All the design work for my website is very successful.">"හොඳම සේවාවක් ලබා දෙන ආයතනයක්. මගේ වෙබ් අඩවියේ නිර්මාණ කටයුතු සියල්ලම ඉතා සාර්ථකයි."</p>
+                            <span class="reviewer-name">Sahan Jayasinghe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3 style="color: var(--primary-color); font-size: 1.5rem; margin-bottom: 15px;">AB Studio</h3>
+                <p style="margin-top:15px; color: #636e72;">Abhiman Gihan Bandara<br><span data-si="Founder of Ab Studio" data-en="Founder of Ab Studio">Founder of Ab Studio</span></p>
+                <p style="color: #636e72; margin-top: 10px; font-size: 0.9rem;" data-si="Creative Design Agency Est. 2024" data-en="Creative Design Agency Est. 2024">Creative Design Agency<br>Est. 2024</p>
+            </div>
+            <div>
+                <h4 data-si="Useful Links" data-en="Useful Links">Useful Links</h4>
+                <p onclick="showServicesPage()" data-si="Services" data-en="Services">Services</p>
+                <p onclick="showPortfolioPage()" data-si="Portfolio" data-en="Portfolio">Portfolio</p>
+                <p onclick="showAboutPage()" data-si="About Us" data-en="About Us">About Us</p>
+            </div>
+            <div>
+                <h4 data-si="Support" data-en="Support">Support</h4>
+                <p onclick="showContactPage()" data-si="Contact" data-en="Contact">Contact</p>
+                <p onclick="showTracking()" data-si="Track Order" data-en="Track Order">Track Order</p>
+                <p data-si="Privacy Policy" data-en="Privacy Policy">Privacy Policy</p>
+            </div>
+            <div>
+                <h4 data-si="Contact Info" data-en="Contact Info">Contact Info</h4>
+                <p><i class="fas fa-phone" style="color: var(--primary-color); margin-right: 8px;"></i> 0766885161</p>
+                <p><i class="fab fa-whatsapp" style="color: #25D366; margin-right: 8px;"></i> 0704025586</p>
+                <p><i class="fas fa-envelope" style="color: var(--primary-color); margin-right: 8px;"></i> hello@abstudio.lk</p>
+            </div>
+        </div>
+        <hr style="margin-top: 30px; border: none; height: 1px; background: #eee;">
+        <p style="text-align: center; margin-top: 25px; font-size: 0.9rem; color: #636e72;">
+            <i class="fas fa-heart" style="color: #e74c3c;"></i> Copyright &copy; 2026 Ab Studio. <span data-si="All Rights Reserved." data-en="All Rights Reserved.">All Rights Reserved.</span>
+        </p>
+    </footer>
+
+    <a href="https://wa.me/94704025586" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i> <span data-si="Click to join with us!" data-en="Click to join with us!">Click to join with us!</span>
+    </a>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA99VlZTYa8SV6j_PY5t_qhrvjaDjTM8Ak",
+            authDomain: "ab-studio-a3ff9.firebaseapp.com",
+            databaseURL: "https://ab-studio-a3ff9-default-rtdb.firebaseio.com",
+            projectId: "ab-studio-a3ff9",
+            storageBucket: "ab-studio-a3ff9.appspot.com",
+            messagingSenderId: "210185245533",
+            appId: "1:210185245533:web:b08468e127288033e5ceb4"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Current user data
+        let currentUser = null;
+        let currentUserData = null;
+
+        // Auth State Listener
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.querySelector('.mobile-login-btn');
+            
+            if (user) {
+                db.collection('users').doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        currentUserData = doc.data();
+                        if (loginBtn) {
+                            loginBtn.innerHTML = '<i class="fas fa-user"></i> ' + (currentUserData.name || 'My Account');
+                            loginBtn.onclick = showProfile;
+                        }
+                        if (mobileLoginBtn) {
+                            mobileLoginBtn.innerHTML = '<i class="fas fa-user"></i> ' + (currentUserData.name || 'My Account');
+                            mobileLoginBtn.onclick = () => { toggleMobileMenu(); showProfile(); };
+                        }
+                    }
+                });
+            } else {
+                currentUserData = null;
+                if (loginBtn) {
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span data-si="Login Now" data-en="Login Now">Login Now</span>';
+                    loginBtn.onclick = () => document.getElementById('modalOverlay').classList.add('active');
+                }
+                if (mobileLoginBtn) {
+                    mobileLoginBtn.innerHTML = '<span data-si="Login" data-en="Login">Login</span>';
+                    mobileLoginBtn.onclick = () => { toggleMobileMenu(); document.getElementById('modalOverlay').classList.add('active'); };
+                }
+            }
+        });
+
+        // Form Validation Functions
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePhone(phone) {
+            const re = /^(07|\+947)[0-9]{8}$/;
+            return re.test(phone.replace(/\s/g, ''));
+        }
+
+        function showFieldError(fieldId, errorId, show) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(errorId);
+            if (field && error) {
+                if (show) {
+                    field.classList.add('error');
+                    error.classList.add('show');
+                } else {
+                    field.classList.remove('error');
+                    error.classList.remove('show');
+                }
+            }
+        }
+
+        // Login Form Handler with Validation
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            let isValid = true;
+            
+            // Validate email
+            if (!email || !validateEmail(email)) {
+                showFieldError('loginEmail', 'loginEmailError', true);
+                isValid = false;
+            } else {
+                showFieldError('loginEmail', 'loginEmailError', false);
+            }
+            
+            // Validate password
+            if (!password || password.length < 6) {
+                showFieldError('loginPassword', 'loginPasswordError', true);
+                isValid = false;
+            } else {
+                showFieldError('loginPassword', 'loginPasswordError', false);
+            }
+            
+            if (!isValid) return;
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                document.getElementById('modalOverlay').classList.remove('active');
+                document.getElementById('loginForm').reset();
+                showNotification('Login successful!', 'success');
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMsg = 'Login failed: ';
+                if (error.code === 'auth/user-not-found') {
+                    errorMsg += 'User not found. Please check your email.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMsg += 'Incorrect password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg += 'Invalid email format.';
+                } else {
+                    errorMsg += error.message;
+                }
+                showNotification(errorMsg, 'error');
+            }
+        });
+
+        // Signup Form Handler with Validation
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value.trim();
+            const phone = document.getElementById('userPhone').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            
+            let isValid = true;
+            
+            // Validate name
+            if (!name || name.length < 2) {
+                showFieldError('userName', 'userNameError', true);
+                isValid = false;
+            } else {
+                showFieldError('userName', 'userNameError', false);
+            }
+            
+            // Validate phone
+            if (!phone || !validatePhone(phone)) {
+                showFieldError('userPhone', 'userPhoneError', true);
+                isValid = false;
+            } else {
+                showFieldError('userPhone', 'userPhoneError', false);
+            }
+            
+            // Validate email
+            if (!email || !validateEmail(email)) {
+                showFieldError('userEmail', 'userEmailError', true);
+                isValid = false;
+            } else {
+                showFieldError('userEmail', 'userEmailError', false);
+            }
+            
+            // Validate password
+            if (!password || password.length < 6) {
+                showFieldError('signupPassword', 'signupPasswordError', true);
+                isValid = false;
+            } else {
+                showFieldError('signupPassword', 'signupPasswordError', false);
+            }
+            
+            if (!isValid) return;
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                await db.collection('users').doc(user.uid).set({
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    createdAt: new Date().toISOString(),
+                    role: 'customer'
+                });
+
+                document.getElementById('modalOverlay').classList.remove('active');
+                document.getElementById('signupForm').reset();
+                showNotification('Account created successfully!', 'success');
+            } catch (error) {
+                showNotification('Signup failed: ' + error.message, 'error');
+            }
+        });
+
+        // Logout Handler
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                document.getElementById('profileModal').classList.remove('active');
+                showNotification('Logged out successfully!', 'success');
+            } catch (error) {
+                showNotification('Logout failed: ' + error.message, 'error');
+            }
+        });
+
+        // Show Profile Modal
+        function showProfile() {
+            if (currentUserData) {
+                document.getElementById('profileName').value = currentUserData.name || '';
+                document.getElementById('profilePhone').value = currentUserData.phone || '';
+                document.getElementById('profileEmail').value = currentUserData.email || '';
+                document.getElementById('profileCreated').value = currentUserData.createdAt ? new Date(currentUserData.createdAt).toLocaleString() : '';
+                document.getElementById('profileModal').classList.add('active');
+            }
+        }
+
+        // Close Profile Modal
+        document.getElementById('closeProfileModal').addEventListener('click', () => {
+            document.getElementById('profileModal').classList.remove('active');
+        });
+
+        // Notification function
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = 'notification ' + type;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideInNotification 0.4s ease reverse';
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+
+        // Save Order to Database
+        async function saveOrderToDatabase(customerName, service, price, trackingID, receiptURL = null) {
+            try {
+                const orderData = {
+                    customerName: customerName,
+                    service: service,
+                    price: price,
+                    trackingID: trackingID,
+                    status: "Pending",
+                    date: new Date().toISOString(),
+                    receiptURL: receiptURL,
+                    userId: currentUser ? currentUser.uid : null
+                };
+
+                await db.collection("orders").doc(trackingID).set(orderData);
+                console.log("Order saved to database!");
+                return true;
+            } catch (error) {
+                console.error("Error saving order: ", error);
+                return false;
+            }
+        }
+
+        // FIXED Track Order from Firebase
+        async function trackOrder() {
+            const idInput = document.getElementById('orderIDInput');
+            const id = idInput.value.trim().toUpperCase();
+            const resultArea = document.getElementById('trackingResult');
+            const msg = document.getElementById('trackMessage');
+            const bar = document.getElementById('progressBar');
+            const orderDetails = document.getElementById('orderDetails');
+
+            // Reset display
+            msg.className = '';
+            msg.style.color = '';
+
+            if (!id) {
+                msg.innerText = "කරුණාකර ඇණවුම් අංකයක් ඇතුළත් කරන්න.";
+                msg.className = 'error';
+                resultArea.style.display = 'none';
+                orderDetails.style.display = 'none';
+                idInput.focus();
+                return;
+            }
+
+            // Show loading
+            msg.innerText = "සොයා බලමින්...";
+            msg.style.color = "#6c5ce7";
+
+            try {
+                const orderDoc = await db.collection('orders').doc(id).get();
+                
+                if (orderDoc.exists) {
+                    const orderData = orderDoc.data();
+                    const statusSteps = {
+                        'Pending': 1,
+                        'Designing': 2,
+                        'Review': 3,
+                        'Completed': 4,
+                        'Delivered': 4
+                    };
+                    
+                    const stepNum = statusSteps[orderData.status] || 1;
+                    
+                    resultArea.style.display = 'flex';
+                    orderDetails.style.display = 'block';
+                    msg.className = 'success';
+                    msg.innerText = getStatusMessage(orderData.status);
+
+                    // Update progress bar with animation
+                    const progressWidth = ((stepNum - 1) / 3) * 100;
+                    setTimeout(() => {
+                        bar.style.width = progressWidth + '%';
+                    }, 100);
+
+                    // Update steps
+                    for (let i = 1; i <= 4; i++) {
+                        const step = document.getElementById('step' + i);
+                        step.classList.remove('active', 'completed');
+                        if (i < stepNum) {
+                            step.classList.add('completed');
+                        } else if (i === stepNum) {
+                            step.classList.add('active');
+                        }
+                    }
+
+                    // Update order details
+                    document.getElementById('trackService').innerText = orderData.service || 'N/A';
+                    document.getElementById('trackCustomer').innerText = orderData.customerName || 'N/A';
+                    document.getElementById('trackDate').innerText = orderData.date ? new Date(orderData.date).toLocaleDateString() : 'N/A';
+                    document.getElementById('trackAmount').innerText = 'LKR ' + (orderData.price || '0');
+                } else {
+                    msg.innerText = "ඇණවුම් අංකය නොමැත. කරුණාකර නැවත පරීක්ෂා කරන්න.";
+                    msg.className = 'error';
+                    resultArea.style.display = 'none';
+                    orderDetails.style.display = 'none';
+                }
+            } catch (error) {
+                msg.innerText = "දත්ත ලබා ගැනීමේ දෝෂයකි. නැවත උත්සාහ කරන්න.";
+                msg.className = 'error';
+                resultArea.style.display = 'none';
+                orderDetails.style.display = 'none';
+            }
+        }
+
+        function getStatusMessage(status) {
+            const messages = {
+                'Pending': 'ඔබේ ඇණවුම ලැබී ඇත. ඉක්මනින් ක්‍රියාත්මක වේ.',
+                'Designing': 'ඔබේ ඩිසයිනය නිර්මාණය කරමින් පවතී.',
+                'Review': 'ඔබේ ඩිසයිනය සමාලෝචනයට ඉදිරිපත් කර ඇත.',
+                'Completed': 'ඔබේ ඩිසයිනය සම්පූර්ණයි!',
+                'Delivered': 'ඔබේ ඇණවුම බාරදී ඇත.'
+            };
+            return messages[status] || 'ස්ථිතිය: ' + status;
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

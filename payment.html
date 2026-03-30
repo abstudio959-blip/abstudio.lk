@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary & Payment | AB STUDIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --dark-color: #2d3436;
+            --success-color: #00b894;
+            --danger-color: #d63031;
+            --warning-color: #fdcb6e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #f3f0ff 0%, #e8e4ff 100%);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+            /* Grid pattern background */
+            background-image: 
+                linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px),
+                linear-gradient(135deg, #f3f0ff 0%, #e8e4ff 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+        }
+        
+        .summary-card { 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 25px; 
+            box-shadow: 0 25px 60px rgba(108, 92, 231, 0.15); 
+            width: 100%; 
+            max-width: 550px; 
+            text-align: center; 
+            border-top: 5px solid var(--primary-color); 
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        @keyframes popUp {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        h2 { 
+            color: var(--dark-color); 
+            margin-bottom: 5px; 
+            font-size: 1.8rem; 
+        }
+        
+        .service-name { 
+            color: #636e72; 
+            font-size: 1rem; 
+            margin-bottom: 25px; 
+            font-weight: 500; 
+        }
+        
+        .price-box { 
+            background: linear-gradient(135deg, #f9f8ff 0%, #fff 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            border: 2px solid #f0eeff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .price-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .price-label { 
+            font-size: 0.9rem; 
+            color: #636e72; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .price-value { 
+            font-size: 3rem; 
+            font-weight: 800; 
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 10px;
+        }
+        
+        .tracking-box { 
+            background: linear-gradient(135deg, #fff 0%, #f9f8ff 100%); 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: 2px dashed var(--secondary-color); 
+            margin: 25px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .tracking-box:hover {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #fff 0%, #f3f0ff 100%);
+        }
+        
+        .tracking-id { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            color: var(--dark-color); 
+            letter-spacing: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .order-summary {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+            border: 1px solid #eee;
+        }
+        
+        .order-summary h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .order-summary p {
+            margin: 12px 0;
+            color: #636e72;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .order-summary p strong {
+            color: var(--dark-color);
+            min-width: 100px;
+        }
+        
+        /* Payment Method Tabs */
+        .payment-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+            background: #f8f9fa;
+            padding: 5px;
+            border-radius: 12px;
+        }
+        
+        .payment-tab {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #636e72;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .payment-tab.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .payment-tab:hover:not(.active) {
+            color: var(--primary-color);
+        }
+        
+        /* Payment Sections */
+        .payment-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .payment-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Bank Transfer Section */
+        .bank-details { 
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); 
+            padding: 25px; 
+            border-radius: 15px; 
+            text-align: left; 
+            margin: 20px 0; 
+            border-left: 4px solid var(--primary-color); 
+        }
+        
+        .bank-details h4 { 
+            margin-top: 0; 
+            color: var(--primary-color); 
+            margin-bottom: 20px; 
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .bank-details p { 
+            margin: 10px 0; 
+            font-size: 0.95rem; 
+            color: #2d3436; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Card Payment Section */
+        .card-payment-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #eee;
+        }
+        
+        .card-payment-section h4 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .card-icons i {
+            color: #636e72;
+        }
+        
+        .form-group { 
+            text-align: left; 
+            margin-bottom: 20px; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 10px; 
+            color: #2d3436; 
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group input[type="file"] { 
+            width: 100%; 
+            padding: 14px; 
+            border: 2px solid #eee; 
+            border-radius: 12px; 
+            outline: none; 
+            transition: all 0.3s ease; 
+            box-sizing: border-box; 
+            background: #fff;
+            cursor: pointer;
+        }
+        
+        .form-group input[type="file"]:focus { 
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .file-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: none;
+            border: 2px dashed #ddd;
+        }
+        
+        .file-preview.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .file-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .file-preview p {
+            margin-top: 10px;
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+
+        .note { 
+            color: var(--danger-color); 
+            font-size: 0.85rem; 
+            margin-bottom: 25px; 
+            padding: 15px; 
+            background: #fff5f5; 
+            border-radius: 12px; 
+            text-align: left; 
+            line-height: 1.6;
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .pay-btn { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); 
+            color: white; 
+            border: none; 
+            padding: 18px 30px; 
+            border-radius: 12px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .pay-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        
+        .pay-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .pay-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 35px rgba(108, 92, 231, 0.4); 
+        }
+        
+        .pay-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .pay-btn:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pay-btn .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .pay-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .pay-btn.loading .btn-text {
+            opacity: 0.8;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, var(--success-color), #00d2a0);
+            color: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .error-message {
+            display: none;
+            background: linear-gradient(135deg, var(--danger-color), #ff4757);
+            color: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #636e72;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-color);
+            transform: translateX(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .summary-card {
+                padding: 25px 20px;
+            }
+            
+            .price-value {
+                font-size: 2.2rem;
+            }
+            
+            .tracking-id {
+                font-size: 1.4rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="summary-card">
+        <div class="success-message" id="successMsg">
+            <i class="fas fa-check-circle"></i> Order placed successfully!
+        </div>
+        <div class="error-message" id="errorMsg">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText"></span>
+        </div>
+
+        <h2><i class="fas fa-credit-card" style="color: var(--primary-color);"></i> ගෙවීම් තහවුරු කරන්න</h2>
+        <div class="service-name" id="displayService">Premium Design Service</div>
+        
+        <div class="order-summary">
+            <h4><i class="fas fa-clipboard-list"></i> Order Summary</h4>
+            <p><strong><i class="fas fa-user"></i> Customer:</strong> <span id="displayCustomer">-</span></p>
+            <p><strong><i class="fas fa-paint-brush"></i> Service:</strong> <span id="displayService2">-</span></p>
+            <p><strong><i class="fas fa-info-circle"></i> Details:</strong> <span id="displayDetails">-</span></p>
+        </div>
+        
+        <div class="price-box">
+            <div class="price-label">Total Amount (LKR)</div>
+            <div class="price-value" id="displayPrice">0</div>
+        </div>
+        
+        <div class="tracking-box">
+            <p style="margin: 0; font-size: 0.85rem; color: #636e72; margin-bottom: 8px;"><i class="fas fa-hashtag"></i> Order Tracking Number</p>
+            <div class="tracking-id" id="displayTracking">AB-XXXX</div>
+            <p style="margin: 10px 0 0 0; font-size: 0.8rem; color: #888;">මෙම අංකය මතක තබා ගන්න</p>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="payment-tabs">
+            <button class="payment-tab active" onclick="switchPaymentMethod('bank')" id="bankTab">
+                <i class="fas fa-university"></i> Bank Transfer
+            </button>
+            <button class="payment-tab" onclick="switchPaymentMethod('card')" id="cardTab">
+                <i class="fas fa-credit-card"></i> Card Payment
+            </button>
+        </div>
+
+        <!-- Bank Transfer Section -->
+        <div class="payment-section active" id="bankSection">
+            <div class="bank-details">
+                <h4><i class="fas fa-university"></i> Bank Transfer Details</h4>
+                <p><strong><i class="fas fa-building"></i> Bank:</strong> Sampath Bank</p>
+                <p><strong><i class="fas fa-map-marker-alt"></i> Branch:</strong> Main Branch</p>
+                <p><strong><i class="fas fa-user"></i> Account Name:</strong> Abhiman Gihan Bandara</p>
+                <p><strong><i class="fas fa-hashtag"></i> Account Number:</strong> 1234 5678 9012</p>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-file-invoice-dollar"></i> Payment Receipt (ගෙවීම් රිසිට්පත)</label>
+                <input type="file" id="receiptFile" accept="image/*" onchange="previewReceipt(this)">
+                <div class="file-preview" id="filePreview">
+                    <img id="previewImage" src="" alt="Receipt Preview">
+                    <p id="fileName"></p>
+                </div>
+                <p id="receiptError" style="color: var(--danger-color); font-size: 0.85rem; margin-top: 8px; display: none;">
+                    <i class="fas fa-exclamation-circle"></i> කරුණාකර රිසිට්පතක් අප්ලෝඩ් කරන්න.
+                </p>
+            </div>
+
+            <p class="note">
+                <i class="fas fa-exclamation-circle"></i> කරුණාකර මෙම <b>ට්‍රැකින් කෝඩය</b> මතක තබා ගන්න. එමෙන්ම ඔබ අප්ලෝඩ් කරන ලද රිසිට්පතේ ඡායාරූපයත් WhatsApp පණිවිඩය සමඟ අප වෙත එවන්න.
+            </p>
+
+            <button class="pay-btn" id="payBtn" onclick="finalPayment()">
+                <span class="spinner"></span>
+                <span class="btn-text"><i class="fab fa-whatsapp"></i> Confirm & Place Order via WhatsApp</span>
+            </button>
+        </div>
+
+        <!-- Card Payment Section -->
+        <div class="payment-section" id="cardSection">
+            <div class="card-payment-section">
+                <h4><i class="fas fa-credit-card"></i> Card Details</h4>
+                
+                <div class="card-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Cardholder Name</label>
+                    <input type="text" id="cardName" placeholder="JOHN DOE">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-credit-card"></i> Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-alt"></i> Expiry Date</label>
+                        <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> CVV</label>
+                        <input type="number" id="cardCVV" placeholder="123" maxlength="4">
+                    </div>
+                </div>
+                
+                <p class="note" style="margin-top: 15px;">
+                    <i class="fas fa-shield-alt"></i> This is a demo card payment interface. No actual payment will be processed.
+                </p>
+                
+                <button class="pay-btn" id="cardPayBtn" onclick="processCardPayment()">
+                    <span class="spinner"></span>
+                    <span class="btn-text"><i class="fas fa-lock"></i> Pay LKR <span id="cardPayAmount">0</span></span>
+                </button>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA99VlZTYa8SV6j_PY5t_qhrvjaDjTM8Ak",
+            authDomain: "ab-studio-a3ff9.firebaseapp.com",
+            databaseURL: "https://ab-studio-a3ff9-default-rtdb.firebaseio.com",
+            projectId: "ab-studio-a3ff9",
+            storageBucket: "ab-studio-a3ff9.appspot.com",
+            messagingSenderId: "210185245533",
+            appId: "1:210185245533:web:b08468e127288033e5ceb4"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Get URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const serviceName = params.get('service') || "Custom Design Service";
+        const servicePrice = params.get('price') || "0";
+        const customerName = params.get('name') || "Customer";
+        const designDetails = params.get('details') || "Not specified";
+        const customerPhone = params.get('phone') || "";
+        const customerEmail = params.get('email') || "";
+
+        // Generate tracking ID
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        const trackingID = "AB-" + randomNum;
+
+        // Display data
+        document.getElementById('displayService').innerText = serviceName;
+        document.getElementById('displayService2').innerText = serviceName;
+        document.getElementById('displayPrice').innerText = parseFloat(servicePrice).toLocaleString();
+        document.getElementById('displayTracking').innerText = trackingID;
+        document.getElementById('displayCustomer').innerText = customerName;
+        document.getElementById('displayDetails').innerText = designDetails;
+        document.getElementById('cardPayAmount').innerText = parseFloat(servicePrice).toLocaleString();
+
+        // Switch payment method
+        function switchPaymentMethod(method) {
+            const bankTab = document.getElementById('bankTab');
+            const cardTab = document.getElementById('cardTab');
+            const bankSection = document.getElementById('bankSection');
+            const cardSection = document.getElementById('cardSection');
+            
+            if (method === 'bank') {
+                bankTab.classList.add('active');
+                cardTab.classList.remove('active');
+                bankSection.classList.add('active');
+                cardSection.classList.remove('active');
+            } else {
+                cardTab.classList.add('active');
+                bankTab.classList.remove('active');
+                cardSection.classList.add('active');
+                bankSection.classList.remove('active');
+            }
+        }
+
+        // Preview receipt image
+        function previewReceipt(input) {
+            const preview = document.getElementById('filePreview');
+            const previewImg = document.getElementById('previewImage');
+            const fileName = document.getElementById('fileName');
+            const errorText = document.getElementById('receiptError');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.classList.add('show');
+                    fileName.textContent = input.files[0].name;
+                }
+                reader.readAsDataURL(input.files[0]);
+                errorText.style.display = 'none';
+                input.style.borderColor = '#eee';
+            }
+        }
+
+        // Validate card form
+        function validateCardForm() {
+            const cardName = document.getElementById('cardName').value.trim();
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCVV = document.getElementById('cardCVV').value;
+            
+            if (!cardName || cardName.length < 3) {
+                showError('Please enter a valid cardholder name');
+                return false;
+            }
+            
+            if (!cardNumber || cardNumber.length < 13 || !/^\d+$/.test(cardNumber)) {
+                showError('Please enter a valid card number');
+                return false;
+            }
+            
+            if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+                showError('Please enter a valid expiry date (MM/YY)');
+                return false;
+            }
+            
+            if (!cardCVV || cardCVV.length < 3 || !/^\d+$/.test(cardCVV)) {
+                showError('Please enter a valid CVV');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Process card payment (Demo)
+        async function processCardPayment() {
+            if (!validateCardForm()) return;
+            
+            const payBtn = document.getElementById('cardPayBtn');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            payBtn.classList.add('loading');
+            payBtn.disabled = true;
+            errorMsg.style.display = 'none';
+            
+            try {
+                // Simulate payment processing
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Save order to Firestore
+                const orderData = {
+                    customerName: customerName,
+                    customerPhone: customerPhone,
+                    customerEmail: customerEmail,
+                    service: serviceName,
+                    price: servicePrice,
+                    trackingID: trackingID,
+                    status: "Pending",
+                    date: new Date().toISOString(),
+                    designDetails: designDetails,
+                    paymentMethod: "Card (Demo)",
+                    userId: auth.currentUser ? auth.currentUser.uid : null
+                };
+
+                await db.collection("orders").doc(trackingID).set(orderData);
+                
+                // Show success
+                successMsg.style.display = 'flex';
+                
+                // Send to WhatsApp
+                const phone = "94704025586"; 
+                const message = `Hello Ab Studio! %0A%0A*New Order Confirmation*%0AName: ${customerName}%0AService: ${serviceName}%0ATotal Price: Rs. ${servicePrice}%0ATracking ID: ${trackingID}%0APayment: Card Payment (Demo)%0A%0Aමම card payment හරහා ගෙවීම සිදුකළා.`;
+                
+                setTimeout(() => {
+                    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                showError('Error: ' + error.message);
+                payBtn.classList.remove('loading');
+                payBtn.disabled = false;
+            }
+        }
+
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMsg');
+            document.getElementById('errorText').textContent = message;
+            errorMsg.style.display = 'flex';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 5000);
+        }
+
+        // Final payment function - FIXED
+        async function finalPayment() {
+            const receiptInput = document.getElementById('receiptFile');
+            const errorText = document.getElementById('receiptError');
+            const payBtn = document.getElementById('payBtn');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+
+            // Validation
+            if (receiptInput.files.length === 0) {
+                receiptInput.style.borderColor = "#d63031";
+                errorText.style.display = "block";
+                return;
+            }
+
+            // Show loading state
+            payBtn.classList.add('loading');
+            payBtn.disabled = true;
+            errorMsg.style.display = 'none';
+
+            try {
+                // Upload receipt to Firebase Storage with proper path
+                const file = receiptInput.files[0];
+                const fileExtension = file.name.split('.').pop();
+                const fileName = `receipt_${Date.now()}.${fileExtension}`;
+                const storagePath = `receipts/${trackingID}/${fileName}`;
+                const storageRef = storage.ref(storagePath);
+                
+                console.log('Uploading to:', storagePath);
+                
+                // Upload file
+                const uploadTask = await storageRef.put(file);
+                console.log('Upload successful:', uploadTask);
+                
+                // Get download URL
+                const receiptURL = await storageRef.getDownloadURL();
+                console.log('Download URL:', receiptURL);
+
+                // Save order to Firestore
+                const orderData = {
+                    customerName: customerName,
+                    customerPhone: customerPhone,
+                    customerEmail: customerEmail,
+                    service: serviceName,
+                    price: servicePrice,
+                    trackingID: trackingID,
+                    status: "Pending",
+                    date: new Date().toISOString(),
+                    receiptURL: receiptURL,
+                    receiptPath: storagePath,
+                    designDetails: designDetails,
+                    paymentMethod: "Bank Transfer",
+                    userId: auth.currentUser ? auth.currentUser.uid : null
+                };
+
+                await db.collection("orders").doc(trackingID).set(orderData);
+                console.log('Order saved successfully');
+
+                // Show success message
+                successMsg.style.display = 'flex';
+
+                // Send to WhatsApp
+                const phone = "94704025586"; 
+                const message = `Hello Ab Studio! %0A%0A*New Order Confirmation*%0AName: ${customerName}%0AService: ${serviceName}%0ATotal Price: Rs. ${servicePrice}%0ATracking ID: ${trackingID}%0A%0Aමම අදාළ ගෙවීම් සිදුකර රිසිට්පත වෙබ් අඩවියට අප්ලෝඩ් කළා. රිසිට්පතේ ඡායාරූපයක් මම මේ සමඟ ඔබට එවන්නම්.`;
+                
+                // Open WhatsApp
+                window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                errorMsg.style.display = 'flex';
+                document.getElementById('errorText').textContent = 'Error: ' + error.message;
+                payBtn.classList.remove('loading');
+                payBtn.disabled = false;
+            }
+        }
+
+        // Card number formatting
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Expiry date formatting
+        document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // CVV validation (numbers only)
+        document.getElementById('cardCVV')?.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        });
+    </script>
+</body>
+</html>

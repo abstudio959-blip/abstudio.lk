@@ -1,0 +1,9 @@
+﻿File,Purpose
+**api/config.php**,"Database config, JWT authentication helpers, response utilities"
+**api/database.sql**,"Complete MySQL schema with tables for users, orders, payments, files, logs"
+**api/auth.php**,"Login, register, token refresh, verification endpoints"
+**api/orders.php**,"Create, read, update, delete orders with status history"
+**api/users.php**,User management (admin only) and profile updates
+**api/tracking.php**,Order tracking and status update endpoints
+**api/dashboard.php**,"Dashboard statistics, revenue reports, service analytics"
+**api/upload.php**,File upload handler for receipts and design files
